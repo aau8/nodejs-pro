@@ -1,3 +1,7 @@
+/**
+ * Вынос функционала в отдельный поток (thread)
+ */
+
 const { Worker } = require("worker_threads");
 
 const compute = (array) => {

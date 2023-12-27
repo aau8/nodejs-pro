@@ -1,3 +1,7 @@
+/**
+ * Вынос функционала в отдельный процес
+ */
+
 const { fork } = require("child_process");
 
 const forkProcess = fork("./worker.js")
