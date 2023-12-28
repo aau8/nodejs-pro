@@ -1,60 +1,56 @@
-// const { performance } = require("perf_hooks")
-const { Worker } = require("worker_threads");
-const { compute } = require("./compute.js");
+/**
+ * [x] clearMarks()
+ * [x] clearMeasures()
+ * [x] getEntries()
+ * [x] getEntriesByName()
+ * [x] getEntriesByType()
+ * [x] mark()
+ * [x] measure()
+ * [x] now()
+ * [x] timeOrigin
+ * [x] timerify()
+ * [x] new PerformanceObserver()
+ * [x] performanceObserver.observe()
+ */
 
-function workerFunction() {
-    return new Promise((resolve) => {
-        const worker = new Worker("./worker.js");
+const { performance, PerformanceNodeTiming, PerformanceObserver } = require("perf_hooks");
+const { foo } = require("./foo.js")
 
-        worker.on("message", (msg) => {
-            resolve(msg);
-        });
-    });
-}
+const po = new PerformanceObserver()
 
-function fooFunction() {
-    const start = performance.now();
-    const result = compute();
-    const end = performance.now();
+po.observe()
 
-    return {
-        result: result,
-        start_time: start,
-        end_time: end,
-        duration: end - start,
-        origin_time: performance.timeOrigin,
-    };
-}
+// const po = new PerformanceObserver((list, observer) => {
+//     console.log(list.getEntriesByType())
 
-async function main() {
-    const workerResult = await workerFunction();
-    const fooResult = fooFunction();
-
-    console.log(workerResult.duration, fooResult.duration);
-}
-
-// main();
-
-performance.measure("name", {  }, "end")
-
-// function foo() {
-//     const dateStart = Date.now()
-//     const perfStart = performance.now()
-
-//     console.log(dateStart, perfStart)
-
-//     for(let i = 0; i < 100000000; i++) {}
-
-//     return [
-//         Date.now() - dateStart,
-//         performance.now() - perfStart
-//     ]
-// }
-
-// const arr = new Array(10).fill(0).map(el => {
-//     const time = foo()
-
-//     return [ ...time, time[0] - time[1] ]
+//     console.log(performance.clearMarks("start timeout"))
+//     performance.clearMeasures()
+//     // observer.disconnect()
 // })
 
-// console.log(arr)
+// po.observe({
+//     entryTypes: [ "measure", "function", "mark" ],
+// })
+
+const foo2 = performance.timerify(foo)
+
+// performance.mark("start")
+// foo2()
+// performance.measure("foo2", "start")
+
+
+// performance.mark("start timeout")
+// setTimeout(() => {
+//     foo2()
+//     performance.measure("timeout", "start timeout")
+//     console.log('end')
+// }, 1000)
+
+
+const startNode = performance.timeOrigin
+
+console.log(startNode)
+
+setTimeout(() => {
+    console.log(startNode === performance.timeOrigin)
+}, 1000)
