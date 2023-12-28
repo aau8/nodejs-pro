@@ -1,4 +1,6 @@
-# Основные методы API для измерения производительности (performance)
+# Основные методы API performance
+
+Модуль performance используется для проверки производительности (времени) выполнения скриптов, http-запросов, работы с ресурсами, работы внутренней системы и пр.
 
 Доступ к performance можно получить импортируя модуль `perf_hooks` или используя глобальную переменную `performance`
 
@@ -105,50 +107,4 @@ Cоздать пользовательскую запись с типом _mark_
 
 ---
 
-
-
-
-
-
-
-
-
-
-
-## performance.now()
-
-Возвращает высокоточное время (High-Resolution Time) с момента запуска сценария [spec](https://w3c.github.io/perf-timing-primer/#high-resolution-time)
 Некоторые, для проверки производительности используют `Date.now()`. В спецификации это не рекомендуется делать. Время, полученное с помощью Date не является монотонным. Оно может изменяться не равномерно: уменьшаться в отрицательную сторону, увеличиваться быстрее или медленнее. Подобный эффект оказывается настройками NTP, пользовательскими настройками, дополнительными секундами и пр. [(источник)[https://w3c.github.io/perf-timing-primer/#monotonic-clock]]. Поэтому предпочтительнее использовать performance.
-
-## performance.mark(markName, options)
-
-Временная метка на временной шкале, которую могут указать пользователи для отслеживания производительности выполнения кода. Запись, созданная с помощью данного метода, реализует класс _PerformanceMark_, который является подклассом класса _PerformanceEntry_
-
-**Аргументы:**
-
--   markName\*: string - имя метки
--   options: object - объект с необязательными опциями
-    -   detail: any - данные, которые будут указаны в объекте метки в свойстве detail
-    -   startTime: number - время начала выполнения метки. По умолчанию `performance.now()`
-
-Для получения записи используются методы:
-
--   `performance.getEntries()`
--   `performance.getEntriesByName(name)`
--   `performance.getEntriesByType(entryType)`
-
-```js
-performance.mark("start");
-for (let i = 0; i < 100000000; i++) {}
-performance.mark("end");
-
-getEntriesByType("mark"); // Вернется массив с 2 объектами PerformanceMark
-```
-
-**Источники:**
-(performance.mark)[https://nodejs.org/api/perf_hooks.html#performancemarkname-options]
-(performance.getEntries)[https://nodejs.org/api/perf_hooks.html#performancegetentries]
-(performance.getEntriesByName)[https://nodejs.org/api/perf_hooks.html#performancegetentriesbynamename-type]
-(performance.getEntriesByType)[https://nodejs.org/api/perf_hooks.html#performancegetentriesbytypetype]
-(class PerformanceEntry)[https://nodejs.org/api/perf_hooks.html#class-performanceentry]
-(class PerformanceMark)[https://nodejs.org/api/perf_hooks.html#class-performancemark]
