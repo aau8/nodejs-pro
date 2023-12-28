@@ -35,7 +35,7 @@ async function main() {
 
 // main();
 
-
+performance.measure("name", {  }, "end")
 
 // function foo() {
 //     const dateStart = Date.now()
