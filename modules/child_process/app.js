@@ -1,14 +1,9 @@
 /**
  * [x] stdin, stdout, stderr
- * [ ] exec()
- * [ ] spawn()
- * [ ] fork()
- * [ ] process.cwd()
- * [ ] Buffer
- * [ ] SIGTERM
- * [ ] Канал связи IPC - https://nodejs.org/docs/latest/api/child_process.html#:~:text=exception%20of%20the-,IPC%20communication%20channel,-that%20is%20established
- * [ ] class ChildProcess
- *
+ * [x] exec()
+ * [x] spawn()
+ * [x] fork()
+ * [x] process.cwd()
  */
 
 const { spawn, exec, execFile, fork, execSync } = require("child_process");
