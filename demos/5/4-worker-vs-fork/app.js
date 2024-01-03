@@ -13,6 +13,10 @@ const workerFunction = (array) => {
             },
         });
 
+        worker.postMessage("videoFile", [
+            videoFile.buffer
+        ])
+
         worker.on("message", (msg) => {
             resolve(msg);
         });
@@ -48,22 +52,20 @@ const main = async () => {
         await workerFunction([12, 24, 32, 44]).then((res) => {
             console.log(`workerFunction: ${res}`);
         });
-        performance.mark("endWorker");
+        performance.measure("worker", "startWorker");
 
-        performance.mark("startFork");
-        await forkFunction([12, 24, 32, 44]).then((res) => {
-            console.log(`forkFunction: ${res}`);
-        });
-        performance.mark("endFork");
+        // performance.mark("startFork");
+        // await forkFunction([12, 24, 32, 44]).then((res) => {
+        //     console.log(`forkFunction: ${res}`);
+        // });
+        // performance.measure("fork", "startFork");
 
-        performance.measure("worker", "startWorker", "endWorker");
-        performance.measure("fork", "startFork", "endFork");
 
         const perfWorker = performance.getEntriesByName("worker").pop();
-        const forkWorker = performance.getEntriesByName("fork").pop();
+        // const forkWorker = performance.getEntriesByName("fork").pop();
 
         console.log(perfWorker.name, perfWorker.duration);
-        console.log(forkWorker.name, forkWorker.duration);
+        // console.log(forkWorker.name, forkWorker.duration);
     } catch (err) {
         console.error("Error: ", err.message);
     }

@@ -26,7 +26,7 @@
 
 Метод аналогичен `child_process.exec`, за исключением того, что он не создает оболочку (shell), а выполняет команду напрямую, создавая сразу новый процесс. В связи с чем, `child_process.execFile` выполняется немного быстрее чем `child_process.exec`.
 
-(Документация)[https://nodejs.org/docs/latest/api/child_process.html#child_processexecfilefile-args-options-callback]
+[Документация](https://nodejs.org/docs/latest/api/child_process.html#child_processexecfilefile-args-options-callback)
 
 ---
 
@@ -38,7 +38,7 @@
 
 Для завершения дочернего процесса используется метод `childProcess.disconnect()` в родительском процессе и `process.disconnect()` в дочернем процессе. При вызове методов генерируется событие **disconnect** у обоих процессов, соединение обрывается, дочерний процесс завершается и канал ввода закрывается. После вызова метода, обмен сообщениями между процессами становится невозможным. Если канал связи IPC между процессами не установлен, методы вернут **undefined**.
 
-(Документация)[https://nodejs.org/docs/latest/api/child_process.html#child_processforkmodulepath-args-options]
+[Документация](https://nodejs.org/docs/latest/api/child_process.html#child_processforkmodulepath-args-options)
 
 ---
 
@@ -46,13 +46,13 @@
 
 Создает новый процесс, в котором вызывает указанную команду с аргументами. Метод является основным в модуле. С его помощью можно реализовать функциона любого другого асинхронного метода.
 
-(Документация)[https://nodejs.org/docs/latest/api/child_process.html#child_processspawncommand-args-options]
+[Документация](https://nodejs.org/docs/latest/api/child_process.html#child_processspawncommand-args-options)
 
 ---
 
 Модуль `child_process` также имеет синхронные аналоги вышеперечисленных методов, такие как `child_process.execSync`, `child_process.execFileSync`, `child_process.spawnSync`. Они ничем не отличаются от своих асинхронных аналогов за тем исключением, что они блокируют основной поток.
 
-(Документация)[https://nodejs.org/docs/latest/api/child_process.html#synchronous-process-creation]
+[Документация](https://nodejs.org/docs/latest/api/child_process.html#synchronous-process-creation)
 
 ---
 
@@ -68,12 +68,12 @@ childProcess.stdout.on("data", (chunk) => {
 
 Таким образом можно навесить событие на любой канал связи обратившись предварительно к дочернему процессу. Подробнее о событиях:
 
-(События канала stdin (Stream.Writeable))[https://nodejs.org/docs/latest/api/stream.html#class-streamwritable]
-(События канала stdout и stderr (Stream.Readable))[https://nodejs.org/docs/latest/api/stream.html#class-streamreadable]
+[События канала stdin (Stream.Writeable)](https://nodejs.org/docs/latest/api/stream.html#class-streamwritable)
+[События канала stdout и stderr (Stream.Readable)](https://nodejs.org/docs/latest/api/stream.html#class-streamreadable)
 
 Единственно что нужно учитывать, что каналы ввода и вывода можно у дочернего процесса можно изменить, указав другой дескриптов в опции stdio у соответствующего метода. При любом значении отличном от **pipe**, при обращении к свойству stdout, stdin или stderr будет возвращать `null`.
 
-(Документация)[https://nodejs.org/docs/latest/api/child_process.html#optionsstdio]
+[Документация](https://nodejs.org/docs/latest/api/child_process.html#optionsstdio)
 
 ---
 
