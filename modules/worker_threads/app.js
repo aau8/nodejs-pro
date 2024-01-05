@@ -1,18 +1,19 @@
 /**
- * [ ] worker.getEnvironmentData()
- * [ ] worker.setEnvironmentData()
- * [ ] worker.isMainThread
- * [ ] worker.parentPort
- * [ ] worker.threadId
- * [ ] worker.workerData
+ * [x] worker.getEnvironmentData()
+ * [x] worker.setEnvironmentData()
+ * [x] worker.isMainThread
+ * [x] worker.parentPort
+ * [x] worker.threadId
+ * [x] worker.workerData
  * [ ] class BroadcastChannel
- * [ ] Worker или функция возвращающая Promise?
  * [ ] class MessagePort
  */
 
-const { Worker, isMainThread, parentPort, MessageChannel, resourceLimits, SHARE_ENV, threadId, markAsUntransferable,  } = require("worker_threads");
+const { Worker, isMainThread, workerData, parentPort, MessageChannel, resourceLimits, SHARE_ENV, threadId, markAsUntransferable, getEnvironmentData, setEnvironmentData,  } = require("worker_threads");
 const fsPromise = require("fs/promises");
 const assert = require("assert");
+
+// setEnvironmentData()
 
 const getFileHandle = async () => {
     return fsPromise.open("./output.txt", "a+")
@@ -34,6 +35,8 @@ class Person {
 
 async function main() {
     if (isMainThread) {
+        console.log('main thread:', workerData)
+        setEnvironmentData("name", "Artyom")
         process.env.DEV_MODE = true
         console.log("env parent:", process.env.DEV_MODE)
         const worker = new Worker(__filename, {
@@ -81,8 +84,9 @@ async function main() {
         // console.log("data:", data.toString())
     }
     else {
+        // console.log("env environment data:", getEnvironmentData("name"))
         parentPort.postMessage("Hello from worker")
-        console.log("env worker:", process.env.DEV_MODE)
+        // console.log("env worker:", process.env.DEV_MODE)
 
         parentPort.on("message", (msg) => {
             console.log("Worker msg:", msg)
