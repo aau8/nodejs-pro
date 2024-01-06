@@ -5,13 +5,15 @@
  * [x] worker.parentPort
  * [x] worker.threadId
  * [x] worker.workerData
- * [ ] class BroadcastChannel
+ * [x] class BroadcastChannel
  * [ ] class MessagePort
  */
 
 const { Worker, isMainThread, workerData, parentPort, MessageChannel, resourceLimits, SHARE_ENV, threadId, markAsUntransferable, getEnvironmentData, setEnvironmentData,  } = require("worker_threads");
 const fsPromise = require("fs/promises");
 const assert = require("assert");
+
+const channel = new BroadcastChannel("name")
 
 // setEnvironmentData()
 
