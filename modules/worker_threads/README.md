@@ -50,3 +50,10 @@
 
 ---
 
+## class BroadcastChannel(name: string): BroadcastChannel
+
+Позволяет подписаться на определенный канал по его имени. Наследуется от EventTarget
+
+[Документация](https://nodejs.org/docs/latest/api/worker_threads.html#class-broadcastchannel-extends-eventtarget)
+
+---
