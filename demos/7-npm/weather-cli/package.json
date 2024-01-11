@@ -1,0 +1,19 @@
+{
+  "name": "weather-cli",
+  "version": "1.0.0",
+  "description": "CLI for getting weather",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "gulp -v"
+  },
+  "keywords": [
+    "cli",
+    "weather"
+  ],
+  "author": "Artyom Ugryumov",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.5"
+  }
+}
