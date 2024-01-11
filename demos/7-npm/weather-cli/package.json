@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "description": "CLI for getting weather",
   "main": "index.js",
+  "bin": {
+    "weather": "index.js"
+  },
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "gulp -v"
+    "start": "node index.js"
   },
   "keywords": [
     "cli",
@@ -14,6 +17,8 @@
   "author": "Artyom Ugryumov",
   "license": "ISC",
   "dependencies": {
-    "axios": "^1.6.5"
+    "axios": "^1.6.5",
+    "chalk": "^5.3.0",
+    "dedent": "^1.5.1"
   }
 }
