@@ -1,36 +1,31 @@
-const isNumber = require("./isNumber.js")
-const addition = require("./addition.js")
-const subtraction = require("./subtraction.js")
-const multiply = require("./multiply.js")
-const division = require("./division.js")
+const isNumber = require("./isNumber.js");
+const addition = require("./addition.js");
+const subtraction = require("./subtraction.js");
+const multiply = require("./multiply.js");
+const division = require("./division.js");
 
-let firstNumber = process.argv[2]
-let secondNumber = process.argv[3]
-const command = process.argv[4]
+const [, , firstValue, secondValue, command] = process.argv;
+const actions = { addition, subtraction, multiply, division };
 
 function main() {
-    if (!isNumber(firstNumber, 1) || !isNumber(secondNumber, 2)) {
-        return false
+    if (!isNumber(firstValue) || !isNumber(secondValue)) {
+        return console.error(
+            "Один из первых двух аргументов не является числом!"
+        );
     }
 
-    firstNumber = Number(firstNumber)
-    secondNumber = Number(secondNumber)
+    const firstNumber = Number(firstValue);
+    const secondNumber = Number(secondValue);
 
-    if (command === 'add') {
-        console.log(`Сумма равна: ${addition(firstNumber, secondNumber)}`)
+    if (!actions[command]) {
+        return console.error("Такой команды не существует!");
     }
-    else if (command === 'subtraction') {
-        console.log(`Разность равна: ${subtraction(firstNumber, secondNumber)}`)
-    }
-    else if (command === 'multiply') {
-        console.log(`Умножение равно: ${multiply(firstNumber, secondNumber)}`)
-    }
-    else if (command === 'division') {
-        console.log(`Деление равно: ${division(firstNumber, secondNumber)}`)
-    }
-    else {
-        console.log("Неизвестная команда")
-    }
+
+    Object.entries(actions).forEach(([commandName, actionFn]) => {
+        if (command === commandName) {
+            console.log(`Равно: ${actionFn(firstNumber, secondNumber)}`);
+        }
+    });
 }
 
-main()
+main();

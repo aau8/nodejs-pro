@@ -1,9 +1,5 @@
-function isNumber(value, argvCount) {
-    if (Number(value) != value) {
-        console.log(`Аргумент ${argvCount} не является числом`)
-        return false
-    }
-    return true
+function isNumber(value) {
+    return Number(value) == value;
 }
 
-module.exports = isNumber
+module.exports = isNumber;
