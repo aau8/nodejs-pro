@@ -5,11 +5,11 @@ class Log {
     constructor() {}
 
     error(error) {
-        console.error(chalk.bgRed(" ERROR "), " ", error)
+        console.error(chalk.bgRed(" ERROR "), error)
     }
 
     success(text) {
-        console.log(chalk.bgGreenBright(" SUCCESS "), " ", text)
+        console.log(chalk.bgGreenBright(" SUCCESS "), text)
     }
 
     help() {
