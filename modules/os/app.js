@@ -9,4 +9,6 @@
 const os = require("os")
 const path = require("path")
 
-console.log(os.homedir(), path.sep)
+// console.log(os.homedir(), path.sep)
+
+console.log(os.version())
