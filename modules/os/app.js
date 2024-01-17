@@ -11,4 +11,4 @@ const path = require("path")
 
 // console.log(os.homedir(), path.sep)
 
-console.log(os.version())
+console.log(os.userInfo())
