@@ -5,46 +5,33 @@ const subtraction = require("./subtraction.js");
 const multiply = require("./multiply.js");
 const division = require("./division.js");
 
-function main() {
-    const event = new EventEmitter();
+const event = new EventEmitter();
+const [, , firstNumberValue, secondNumberValue, command] = process.argv;
+const actions = { addition, subtraction, multiply, division }
 
-    let firstNumber = process.argv[2];
-    let secondNumber = process.argv[3];
-    const command = process.argv[4];
+Object.entries(actions).map(([actionName, actionFn]) => {
+    event.on(actionName, (firstNumber, secondNumber) => {
+        event.emit("result", actionFn(firstNumber, secondNumber));
+    });
+})
 
-    if (!isNumber(firstNumber, 1) || !isNumber(secondNumber, 2)) {
+event.on("result", (result) => {
+    console.log(`Результат: ${result}`);
+});
+
+function calculate(firstValue, secondValue, command) {
+    if (!isNumber(firstValue, 1) || !isNumber(secondValue, 2)) {
         return false;
     }
 
-    firstNumber = Number(firstNumber);
-    secondNumber = Number(secondNumber);
+    const firstNumber = Number(firstValue);
+    const secondNumber = Number(secondValue);
 
-    event.on("addition", (f, s) => {
-        event.emit("result", addition(f, s));
-    });
-    event.on("subtraction", (f, s) => {
-        event.emit("result", subtraction(f, s));
-    });
-    event.on("multiply", (f, s) => {
-        event.emit("result", multiply(f, s));
-    });
-    event.on("division", (f, s) => {
-        event.emit("result", division(f, s));
-    });
-    event.on("result", (result) => {
-        console.log(`Результат: ${result}`);
-    });
-
-    if (
-        command === "addition" ||
-        command === "subtraction" ||
-        command === "multiply" ||
-        command === "division"
-    ) {
-        event.emit(command, firstNumber, secondNumber);
-    } else {
-        console.log("Неизвестная команда");
+    if (!Object.keys(actions).some(action => action === command)) {
+        return console.log("Неизвестная команда");
     }
+
+    event.emit(command, firstNumber, secondNumber);
 }
 
-main();
+calculate(firstNumberValue, secondNumberValue, command);
