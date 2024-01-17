@@ -1,29 +1,41 @@
-const timeValues = [
-    process.argv[2],
-    process.argv[3],
-    process.argv[4],
-].filter(value => !!value)
-const hours = parseInt(timeValues.find(value => value.includes('h')) || 0)
-const minutes = parseInt(timeValues.find(value => value.includes('m')) || 0)
-const seconds = parseInt(timeValues.find(value => value.includes('s')) || 0)
-const secTotal = (hours * 60 * 60 + minutes * 60 + seconds)
-let secTime = 0
+const getRemainTime = require("./getRemainTime.js");
+const getTimeValue = require("./getTimeValue.js");
 
-function calcTime() {
-    const remainSecTime = secTotal - secTime
-    const remainHours = Math.trunc(remainSecTime / 60 / 60)
-    const remainMinutes = Math.trunc((remainSecTime - (remainHours * 60 * 60)) / 60)
-    const remainSeconds = Math.trunc(remainSecTime - ((remainHours * 60 + remainMinutes) * 60))
+const timeValues = [process.argv[2], process.argv[3], process.argv[4]].filter(
+    (value) => !!value
+);
 
-    console.log(`${remainHours}h ${remainMinutes}m ${remainSeconds}s`)
+const hours = getTimeValue(timeValues, "h");
+const minutes = getTimeValue(timeValues, "m");
+const seconds = getTimeValue(timeValues, "s");
+const totalTimeSec = hours * 60 * 60 + minutes * 60 + seconds;
 
-    if (secTime >= secTotal) {
-        clearInterval(intervalId)
-        console.log('Нужно позвонить!!!')
+function startTimer() {
+    let elapsedTimeSec = 1; // с учетом вызова функции calcTime спустя 1000ms после запуска setInterval
+
+    function calcTime() {
+        const { hours, minutes, seconds } = getRemainTime(
+            totalTimeSec,
+            elapsedTimeSec
+        );
+
+        console.log(`${hours}h ${minutes}m ${seconds}s`);
+
+        if (elapsedTimeSec >= totalTimeSec) {
+            clearInterval(intervalId);
+            console.log("Нужно позвонить!!!");
+        }
+
+        elapsedTimeSec++;
     }
 
-    secTime++
+    console.log("Таймер запущен!")
+    const intervalId = setInterval(calcTime, 1000);
+
+    process.on("SIGINT", () => {
+        clearInterval(intervalId)
+        console.log("Таймер отменен!")
+    })
 }
 
-const intervalId = setInterval(calcTime, 1000)
-calcTime()
+startTimer();
