@@ -10,6 +10,7 @@
 export const getArgs = (args) => {
     const res = {};
     const [_executor, _file, ...rest] = args;
+    const DELIMITERS = ",:;"
 
     rest.forEach((arg, index, array) => {
         if (arg[0] === "-") {
@@ -18,7 +19,15 @@ export const getArgs = (args) => {
             if (array.length - 1 === index) {
                 res[argName] = true;
             } else if (array[index + 1][0] !== "-") {
-                res[argName] = array[index + 1];
+                const value = array[index + 1];
+
+                // TODO: знак ; не работает в bash. Нужна проверка.
+                if (value.search(new RegExp(`[${DELIMITERS}]`)) !== -1) {
+                    res[argName] = value.split(new RegExp(`[${DELIMITERS}]`)).filter(Boolean)
+                    return
+                }
+
+                res[argName] = value;
             } else {
                 res[argName] = true;
             }

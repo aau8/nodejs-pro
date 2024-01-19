@@ -1,63 +1,38 @@
-import { TOKEN_DICTIONARY, getKeyValue } from "./storage.service.js";
+import { isString } from "../helpers/types.js";
+import { TOKEN_DICTIONARY, getKeyValue, getLanguage } from "./storage.service.js";
 import axios from "axios";
-// import https from "https"
 
 export const getWeather = async () => {
-    const apiToken = process.env.API_TOKEN ?? await getKeyValue(TOKEN_DICTIONARY.apiToken);
-    const city = process.env.CITY ?? await getKeyValue(TOKEN_DICTIONARY.city);
+    const apiToken =
+        process.env.API_TOKEN ?? (await getKeyValue(TOKEN_DICTIONARY.apiToken));
+    const cities =
+        process.env.CITY ?? (await getKeyValue(TOKEN_DICTIONARY.cities));
+    const language = await getLanguage();
 
     if (!apiToken) {
         throw new Error("не установлен api_token");
     }
-    if (!city) {
+    if (!cities) {
         throw new Error("не установлен city");
     }
 
+    const citiesArr = isString(cities)
+        ? cities.split(",").filter(Boolean)
+        : cities;
+
     const url = new URL("https://api.openweathermap.org/data/2.5/weather");
-    const params = {
-        q: city,
-        appid: apiToken,
-        units: "metric",
-        lang: "ru",
-    };
 
-    const { data } = await axios.get(url, { params });
-
-    return data
+    return Promise.all(
+        citiesArr.map(async city => {
+            const { data } = await axios.get(url, {
+                params: {
+                    q: city,
+                    appid: apiToken,
+                    units: "metric",
+                    lang: language,
+                },
+            });
+            return data
+        })
+    )
 };
-
-// export const getWeather = async () => {
-//     const apiToken = await getKeyValue(TOKEN_DICTIONARY.apiToken)
-//     const city = await getKeyValue(TOKEN_DICTIONARY.city)
-
-//     if (!apiToken) {
-//         throw new Error("не установлен api_token")
-//     }
-//     if (!city) {
-//         throw new Error("не установлен city")
-//     }
-
-//     const url = new URL("https://api.openweathermap.org/data/2.5/weather")
-//     const params = {
-//         q: city,
-//         appid: apiToken,
-//         units: "metric",
-//         lang: "ru",
-//     }
-
-//     Object.entries(params).forEach(([key, value]) => {
-//         url.searchParams.append(key, value)
-//     })
-
-//     return new Promise((resolve, reject) => {
-//         https.get(url, (res) => {
-//             res.on("data", (chunk) => {
-//                 resolve(JSON.parse(chunk))
-//             })
-
-//             res.on("error", (err) => {
-//                 reject(err)
-//             })
-//         })
-//     })
-// }
