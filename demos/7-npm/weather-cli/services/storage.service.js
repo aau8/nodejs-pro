@@ -22,7 +22,8 @@ export const saveKeyValue = async (key, value) => {
     let data = {};
 
     if (await fileIsExists(filePath)) {
-        data = JSON.parse(await readFile(filePath));
+        const content = await readFile(filePath, "utf8")
+        data = content ? JSON.parse(content) : {};
     }
 
     data[key] = value;
@@ -39,7 +40,13 @@ export const getKeyValue = async (key) => {
         return undefined;
     }
 
-    const data = JSON.parse(await readFile(filePath));
+    const content = await readFile(filePath, "utf8")
 
-    return data[key];
+    try {
+        const data = content ? JSON.parse(content) : {};
+        return data[key];
+    } catch(err) {
+        await writeFile(filePath, "")
+        return await getKeyValue(key)
+    }
 };

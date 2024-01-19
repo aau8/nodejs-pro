@@ -1,9 +1,10 @@
 import { TOKEN_DICTIONARY, getKeyValue } from "./storage.service.js";
 import axios from "axios";
+// import https from "https"
 
 export const getWeather = async () => {
-    const apiToken = await getKeyValue(TOKEN_DICTIONARY.apiToken);
-    const city = await getKeyValue(TOKEN_DICTIONARY.city);
+    const apiToken = process.env.API_TOKEN ?? await getKeyValue(TOKEN_DICTIONARY.apiToken);
+    const city = process.env.CITY ?? await getKeyValue(TOKEN_DICTIONARY.city);
 
     if (!apiToken) {
         throw new Error("не установлен api_token");
